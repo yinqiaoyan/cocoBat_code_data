@@ -86,10 +86,10 @@ sigma2_g = 0.1
 X_coord = rep(1:ncols, times = nrows)
 Y_coord = rep(1:nrows, each = ncols)
 
-true_labels = vector("list", p)
-true_labels[[1]] = c(rep(1, 4*ncols), rep(2, 3*ncols), rep(3, 3*ncols))
-true_labels[[2]] = c(rep(1, 3*ncols), rep(2, 4*ncols), rep(3, 3*ncols))
-true_labels[[3]] = c(rep(1, 3*ncols), rep(2, 3*ncols), rep(3, 4*ncols))
+true_labels_save = vector("list", p)
+true_labels_save[[1]] = c(rep(1, 4*ncols), rep(2, 3*ncols), rep(3, 3*ncols))
+true_labels_save[[2]] = c(rep(1, 3*ncols), rep(2, 4*ncols), rep(3, 3*ncols))
+true_labels_save[[3]] = c(rep(1, 3*ncols), rep(2, 3*ncols), rep(3, 4*ncols))
 
 coords = cbind(X_coord, Y_coord)
 dists = as.matrix(dist(coords, diag = T, upper = T, method = "euclidean"))
@@ -97,20 +97,21 @@ dists_tri = dists[lower.tri(dists)]
 
 ## Generate data
 Y_mat = GenerateYmat_AllTrueVals(p, G, ni, dists, mu_true_val, gamma_true_val, delta2_true_val,
-                                 eta2_true_val, true_labels, alpha_g_true, sigma2_g)
+                                 eta2_true_val, true_labels_save, alpha_g_true, sigma2_g)
 
 coord_save = list(coords, coords, coords)
 dists_save = list(dists, dists, dists)
 dists_tri_save = list(dists_tri, dists_tri, dists_tri)
-true_labels_save = true_labels
 
 
 ## Save
 save(Y_mat,
      coord_save,
-     true_labels_save,
-     dists_tri_save,
-     dists_save, file = "../input_data/simulated_data.RData")
+     true_labels_save, file = "../input_data/simulated_data.RData")
+
+
+save(dists_tri_save,
+     dists_save, file = "../input_data/dist_mat_sim1.RData")
 
 
 
@@ -127,13 +128,13 @@ colnames(Y_all) <- cell_names
 # batch information
 batch_vec <- rep(paste0("Batch", seq_len(p)), each = ni)
 # cell type information
-celltype_vec <- unlist(true_labels)
+celltype_vec <- unlist(true_labels_save)
 
 meta_df <- data.frame(
   batch    = factor(batch_vec),
   celltype = factor(celltype_vec)
 )
-rownames(meta_df) <- colnames(Y_all)
+rownames(meta_df) <- cell_names
 
 coords_mat <- cbind(
   x = rep(X_coord, times = p),

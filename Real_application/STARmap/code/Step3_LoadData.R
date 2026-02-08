@@ -67,8 +67,11 @@ for (i in 1:3) {
 save(Y_mat,
      coord_save,
      true_labels_save,
-     dists_tri_save,
-     dists_save, file = "../input_data/listed_data.RData")
+     file = "../input_data/listed_data.RData")
+
+save(dists_tri_save,
+     dists_save, 
+     file = "../input_data/dist_mat_STARmap.RData")
 
 
 

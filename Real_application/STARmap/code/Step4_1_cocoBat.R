@@ -24,6 +24,7 @@ print(getwd())
 
 
 load("../input_data/listed_data.RData")
+load("../input_data/dist_mat_STARmap.RData")
 
 cocoBat_res = run_eb_mcmc(Y_mat,
                           true_labels_save,

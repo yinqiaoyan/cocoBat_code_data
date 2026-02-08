@@ -24,6 +24,7 @@ library(cocoBat)
 
 
 load("../input_data/simulated_data.RData")
+load("../input_data/dist_mat_sim1.RData")
 
 cocoBat_res = run_eb_mcmc(Y_mat,
                           true_labels_save,
